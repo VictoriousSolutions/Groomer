@@ -70,11 +70,13 @@ const Cuts = () => (
     where: string;
   };
 
-  const x : Variables = {where: "id=cjw56uher4awf0946vyhwiuno"};
+  //var x = {"where": { id: "cjw56uher4awf0946vyhwiuno" }};
+  var x = {};
 
-  const Cut = () => (
+  const Cut = (props: any) => (
+    
     <Query 
-        variables={x}
+        variables={props.where}
         query={gql`
           query content($first: Int, $skip: Int, $where: PatternWhereInput, $orderBy: PatternOrderByInput) {
                 patterns: patternsConnection(first: $first, skip: $skip, where: $where, orderBy: $orderBy) {
@@ -115,7 +117,7 @@ const Cuts = () => (
   
         return data.patterns.edges.map(({ node } : any) => (
           <div key={node.name}>
-            <Link to={`/cut/${node.id}`}>{node.breed.name} - {node.name}</Link>
+            {node.breed.name} - {node.name} - {node.tools} - {node.instructions}
           </div>
         ));
       }}
@@ -132,10 +134,11 @@ const Index : any = () => {
 }
 
 const CutInfo : any  = ({match} : any) => {
+    var where = {"where": { id: `${match.params.cutId}` }};
     return(
         <div>
-            Cut info {match.params.cutId}
-            <Cut/>
+            Cut info {match.params.cutId}       
+            <Cut where={where}/>
         </div>
     )
 }
