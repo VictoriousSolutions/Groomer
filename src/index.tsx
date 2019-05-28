@@ -8,6 +8,8 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ApolloClient from "apollo-boost";
 import { gql } from "apollo-boost";
 import { ApolloProvider, Query } from "react-apollo";
+import Remarkable from "remarkable"
+
 
 
 const client = new ApolloClient({
@@ -72,6 +74,7 @@ const Cuts = () => (
 
   //var x = {"where": { id: "cjw56uher4awf0946vyhwiuno" }};
   var x = {};
+  var md = new Remarkable()
 
   const Cut = (props: any) => (
     
@@ -117,7 +120,10 @@ const Cuts = () => (
   
         return data.patterns.edges.map(({ node } : any) => (
           <div key={node.name}>
-            {node.breed.name} - {node.name} - {node.tools} - {node.instructions}
+            <h1>{node.breed.name}</h1>
+            <h2>{node.name}</h2> 
+            <div>{node.tools}</div> 
+            <div dangerouslySetInnerHTML={{__html: md.render(node.instructions)}}></div> 
           </div>
         ));
       }}
